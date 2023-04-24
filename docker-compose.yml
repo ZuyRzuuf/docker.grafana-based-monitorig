@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3010:3000'
+    networks:
+      - monitoring
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+      - ./grafana-config:/etc/grafana
+    depends_on:
+      - loki
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - '3110:3100'
+    networks:
+      - monitoring
+    volumes:
+      - ./loki-data:/data/loki
+      - ./loki-config:/etc/loki
+    command: '-config.file=/etc/loki/loki-local-config.yaml'
+
+networks:
+  monitoring:
