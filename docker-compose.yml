@@ -35,9 +35,12 @@ services:
     networks:
       - monitoring
     volumes:
-      - ./prometheus-data:/prometheus
+      - ./prometheus-data:/prometheus/data
       - ./prometheus-config:/etc/prometheus
-    command: '--config.file=/etc/prometheus/prometheus.yml'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus/data'
+      - '--web.enable-lifecycle'
 
 networks:
   monitoring:
