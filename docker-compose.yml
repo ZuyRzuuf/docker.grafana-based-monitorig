@@ -11,6 +11,11 @@ services:
     volumes:
       - ./grafana-data:/var/lib/grafana
       - ./grafana-config:/etc/grafana
+      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana-provisioning/plugins:/etc/grafana/provisioning/plugins
+      - ./grafana-provisioning/notifiers:/etc/grafana/provisioning/notifiers
+      - ./grafana-provisioning/alerting:/etc/grafana/provisioning/alerting
+      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
     depends_on:
       - loki
       - prometheus
@@ -42,9 +47,9 @@ services:
       - '--storage.tsdb.path=/prometheus/data'
       - '--web.enable-lifecycle'
   
-  nodeexporter:
-    image: prom/node-exporter
-    container_name: nodeexporter
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
