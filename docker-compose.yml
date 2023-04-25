@@ -17,20 +17,29 @@ services:
       - ./grafana-provisioning/alerting:/etc/grafana/provisioning/alerting
       - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
     depends_on:
-      - loki
+      - influxdb
       - prometheus
 
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    ports:
-      - '3110:3100'
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
     networks:
       - monitoring
+    ports:
+      - '8086:8086'
     volumes:
-      - ./loki-data:/data/loki
-      - ./loki-config:/etc/loki
-    command: '-config.file=/etc/loki/loki-local-config.yaml'
+      - ./influxdb-data:/var/lib/influxdb
+
+  fluentd:
+    image: fluent/fluentd:latest
+    container_name: fluentd
+    networks:
+      - monitoring
+    ports:
+      - '24224:24224'
+    volumes:
+      - ./fluentd-config:/fluentd/etc
+    command: ["fluentd", "-c", "/fluentd/etc/fluent.conf"]
 
   prometheus:
     image: prom/prometheus:latest
@@ -46,7 +55,7 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus/data'
       - '--web.enable-lifecycle'
-  
+
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
