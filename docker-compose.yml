@@ -41,6 +41,23 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus/data'
       - '--web.enable-lifecycle'
+  
+  nodeexporter:
+    image: prom/node-exporter
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - monitoring
+    restart: unless-stopped
 
 networks:
   monitoring:
