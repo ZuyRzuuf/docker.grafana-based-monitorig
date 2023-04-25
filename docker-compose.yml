@@ -65,4 +65,5 @@ services:
     restart: unless-stopped
 
 networks:
-  monitoring:
+  default:
+    name: monitoring
