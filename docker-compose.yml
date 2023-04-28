@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:9.5.1
     container_name: grafana
     ports:
       - '3010:3000'
@@ -23,7 +23,7 @@ services:
       - prometheus
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:2.37.7
     container_name: prometheus
     ports:
       - '9090:9090'
@@ -38,7 +38,7 @@ services:
       - '--web.enable-lifecycle'
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:1.5.0
     container_name: node-exporter
     volumes:
       - /proc:/host/proc:ro
@@ -53,6 +53,26 @@ services:
     networks:
       - monitoring
     restart: unless-stopped
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - monitoring
+    ports:
+      - "9200:9200"
+      - "9300:9300"
 
 networks:
   monitoring:
