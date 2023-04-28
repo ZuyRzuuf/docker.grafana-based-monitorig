@@ -20,29 +20,6 @@ services:
       - influxdb
       - prometheus
 
-  influxdb:
-    image: influxdb:1.8.10
-    container_name: influxdb
-    networks:
-      - monitoring
-    ports:
-      - '8086:8086'
-    volumes:
-      - ./influxdb-data:/var/lib/influxdb
-
-  fluentd:
-    image: fluent/fluentd:v1.16.1-debian-armhf-1.0
-    container_name: fluentd
-    networks:
-      - monitoring
-    ports:
-      - '24224:24224'
-    volumes:
-      - ./fluentd-config:/fluentd/etc
-    command: ["fluentd", "-c", "/fluentd/etc/fluent.conf"]
-    depends_on:
-      - influxdb
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus

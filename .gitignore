@@ -1,5 +1,4 @@
 grafana-data
 grafana-provisioning/*
 !grafana-provisioning/datasources/
-loki-data
 prometheus-data
