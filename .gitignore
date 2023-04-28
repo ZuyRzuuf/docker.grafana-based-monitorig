@@ -2,3 +2,4 @@ grafana-data
 grafana-provisioning/*
 !grafana-provisioning/datasources/
 prometheus-data
+elasticsearch-data
