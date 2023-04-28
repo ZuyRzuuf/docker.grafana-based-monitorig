@@ -16,8 +16,10 @@ services:
       - ./grafana-provisioning/notifiers:/etc/grafana/provisioning/notifiers
       - ./grafana-provisioning/alerting:/etc/grafana/provisioning/alerting
       - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana-plugins-bundled:/usr/share/grafana/plugins-bundled
+    environment:
+      - GF_LOG_FRONTEND_PROVIDER=grafana
     depends_on:
-      - influxdb
       - prometheus
 
   prometheus:
