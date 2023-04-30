@@ -38,7 +38,7 @@ services:
       - '--web.enable-lifecycle'
 
   node-exporter:
-    image: prom/node-exporter:v1.5.0
+    image: prom/node-exporter:${NODE_EXPORTER_VERSION}
     container_name: node-exporter
     volumes:
       - /proc:/host/proc:ro
@@ -49,7 +49,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
-      - 9100:9100
+      - ${NODE_EXPORTER_HOST_PORT}:9100
     networks:
       - monitoring
     restart: unless-stopped
