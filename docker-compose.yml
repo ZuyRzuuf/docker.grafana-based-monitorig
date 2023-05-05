@@ -114,6 +114,7 @@ services:
     volumes:
       - ./logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash-pipeline:/usr/share/logstash/pipeline:ro,Z
+      - /home/zuyrzuuf/nginx-logs:/var/log/nginx
     networks:
       - monitoring
     depends_on:
