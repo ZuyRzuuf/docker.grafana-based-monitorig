@@ -115,6 +115,7 @@ services:
       - ./logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash-pipeline:/usr/share/logstash/pipeline:ro,Z
       - /home/zuyrzuuf/nginx-logs:/var/log/nginx
+      - /home/zuyrzuuf/mysql-logs:/var/log/mysql
     networks:
       - monitoring
     depends_on:
