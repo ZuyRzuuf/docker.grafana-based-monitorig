@@ -1,4 +1,4 @@
-.env.*
+.env*
 
 grafana-data
 grafana-provisioning/*
